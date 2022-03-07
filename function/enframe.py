@@ -11,10 +11,11 @@ def enframe(x, win, inc=None):
     if inc is None: #若窗移未设置，默认为帧长
         inc = nlen
     nf = (nx - nlen + inc) // inc #分的帧
-    frameout = np.zeros((nf, nlen))
+    frameout = np.zeros((nf, nlen)) #创建矩阵
     indf = np.multiply(inc, np.array([i for i in range(nf)]))
     for i in range(nf):
-        frameout[i, :] = x[indf[i]:indf[i] + nlen]
-    if isinstance(win, list) or isinstance(win, np.ndarray):
+        frameout[i, :] = x[indf[i]:indf[i] + nlen] #分帧运算
+    if isinstance(win, list) or isinstance(win, np.ndarray): #判断类型
         frameout = np.multiply(frameout, np.array(win))
+    
     return frameout #输出的是数组
