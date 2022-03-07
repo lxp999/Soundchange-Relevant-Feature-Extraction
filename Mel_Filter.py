@@ -47,15 +47,15 @@ def melf(M, N, fs, l, h):
                 melbank[k - 1, i] = (i - n1) / (n0 - n1)
             if i >= n0 and i <= n2: #当i在三角形右侧范围的时候，滤波器的函数为melbank=
                 melbank[k - 1, i] = (n2 - i) / (n2 - n0)
-        plt.plot(freq, melbank[k - 1, :])
+        plt.plot(freq, melbank[k - 1, :])#出图检查是否是梅尔滤波器组
     plt.show()
     return melbank, w2
 
 
-if __name__ == '__main__':
-    M=32
-    N=256
-    fs=8000
-    l=0
-    h=fs/2
-    melf(M,N,fs,l,h)
+#if __name__ == '__main__':  # test the code
+    #M=32
+    #N=256
+    #fs=8000
+    #l=0
+    #h=fs/2
+    #melf(M,N,fs,l,h)
