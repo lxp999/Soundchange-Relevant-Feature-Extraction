@@ -1,10 +1,9 @@
 import numpy as np
 
-
 def lpc_coeff(s, p):
     """
     :param s: 一帧数据，分帧操作传参
-    :param p: 线性预测的阶数，手动给与
+    :param p: 线性预测的阶数，需要外部幅值，一般取p=12
     :return:
     """
     n = len(s) #求帧长
@@ -33,4 +32,4 @@ def lpc_coeff(s, p):
     ar[0] = 1
     ar[1:] = -a[:, p - 1]
     G = np.sqrt(Ep[p - 1])
-    return ar, G
+    return ar, G #返回线性预测的系数ar以及增益常数G
