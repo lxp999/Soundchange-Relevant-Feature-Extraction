@@ -5,11 +5,7 @@ from lpc import lpc_coeff
 
 
 def local_maxium(x):
-    """
-    求序列的极大值
-    :param x:
-    :return:
-    """
+ 
     d = np.diff(x) #后一个元素减去前一个元素，并删除最后一个元素
     l_d = len(d)
     maxium = []
@@ -21,6 +17,7 @@ def local_maxium(x):
     return maxium, loc  #返回序列极大值和序列
 
 def Formant_Cepst(u,cepstL):
+    
     wlen2 = len(u)//2
     U = np.log(np.abs(np.fft.fft(u)[:wlen2]))
     Cepst = np.fft.ifft(U)
@@ -35,13 +32,7 @@ def Formant_Cepst(u,cepstL):
     return val, loc, spec
 
 def Formant_Interpolation(u, p, fs):
-    """
-    插值法估计共振峰函数
-    :param u:
-    :param p:
-    :param fs:
-    :return:
-    """
+   
     ar, _ = lpc_coeff(u, p)
     U = np.power(np.abs(np.fft.rfft(ar, 2 * 255)), -2)
     df = fs / 512
