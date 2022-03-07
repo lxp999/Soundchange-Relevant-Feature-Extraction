@@ -9,7 +9,7 @@ def GetSegment(express):
     d_voice = np.where(np.diff(voice) > 1)[0]  #数组后一项减前一项的值用np.diff,这一步处理，将所有SF==1的位置输入d_voice
     #d_voice会比voice少一个长度
 
-    voiceseg = {}
+    voiceseg = {} #用list来存储话段信息，在后续的参数调用中需要注意，将list提取成数组方便索引
     if len(d_voice) > 0:
         for i in range(len(d_voice)):
             seg={}
