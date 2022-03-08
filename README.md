@@ -58,10 +58,12 @@ from scipy.signal import lfilter
 
 > 目前只能检测音素的共振峰，貌似没有什么检测一整句话的共振峰方法
 
-基音周期检测（LPC法，未经过平滑处理）:  
+基音周期检测（LPC法）:  
 <div align = "center">
 <img src=https://github.com/lxp999/Soundchange-relevant-feature-extraction/blob/main/function/pitch_period.png width="500" height="300">  
-</div>  
+</div>    
+
+> 未经过平滑处理  
 
 三角增益滤波器:
 <div align = "center">
