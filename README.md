@@ -18,6 +18,7 @@ import numpy as np
 from scipy.io import wavfile
 import matplotlib.pyplot as plt
 import pyaudio
+from scipy.signal import lfilter
 ```  
 
 ## DSP方法实现变声
