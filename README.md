@@ -11,6 +11,10 @@ Most of the codes are copy from https://github.com/taw19960426/-Speech-signal-pr
 大部分的代码参考自上述链接，本git主要关注变声相关内容，其中的内容在上述连接中未包括
 ----
 
+>使用的工具为：
+```
+python version=3.8.8
+```
 >需要用到的库有：  
   
 ```
