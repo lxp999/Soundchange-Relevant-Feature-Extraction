@@ -2,7 +2,7 @@ import numpy as np
 import scipy.signal
 from scipy.signal import savgol_filter
 
-def LFilter(x,n):
+def LFilter(x,n):  #线性平滑滤波器，暂时有问题，存在数据类型错误使用函数的问题
     window = np.hanning(n)
 
     window = window / np.sum(window)  #归一化
@@ -11,7 +11,9 @@ def LFilter(x,n):
     wnl = len(window)
     #print(x[1])
     y = np.zeros(lenth)
-    #补充数组长度，保证和窗口函数的正常乘积
+    #补充数组长度，保证和窗口函数的正常乘积，再进行矩阵补充时有点问题，python没有matlab那种简单快速的前后补齐矩阵功能，在使用时测试了np.hstack和np.pad都不能很好的满足要求
+    #因为提取的有话段是放在列表里的，在实际提取列表中的元素时容易出现索引错误
+    #确保x的矩阵长度满足x[0] x[] x[l]orx[l+1],相当于前补x[0]后补x[l]或者x[l+1]根据奇偶来决定
     if np.mod(n,2) ==0:#偶数情况
         l = (n//2) #偶数
 
@@ -59,9 +61,7 @@ def LFilter(x,n):
 
 def medfilter(x):#计算的时候都是以数组进行计算的，需要对列表等参数进行处理成数组运算
     xarray = np.array(x)
-    y = scipy.signal.medfilt(xarray,kernel_size=5) #需要注意的是在实际运算时，不够kernel_size的步长会通过自动补0来补齐
-    #win = np.array().reshape()#创建一个窗口矩阵
-    #设定步长padding =
+    y = scipy.signal.medfilt(xarray,kernel_size=5) #需要注意的是在实际运算时，不够kernel_size的步长会通过自动补0来补齐,步长为1
     #计算窗口内的中值并输出
     return y
 
@@ -80,13 +80,14 @@ def combinedfilter(x,vseg,vsl):#将两个函数合并处理
 
 
 
-if __name__ == '__main__':
-    A = np.random.randint(2,30,24)
-    print('A',A)
-    print(np.shape(A.T))
-    y = medfilter(A)
-    print('y',y)
-
-    array1 = np.array([1,2,3])
-    a1 = np.pad(array1,(0,6-len(array1)))
-    print('a1',a1)
+#if __name__ == '__main__':  #测试滤波器是否可用
+    #A = np.random.randint(2,30,24)
+    #print('A',A)
+    #print(np.shape(A.T))
+    #y1 = medfilter(A)
+    #y2 = LFilter(A,3)
+    #print('y1',y1)
+    #print('y2',y2)
+    #array1 = np.array([1,2,3])
+    #a1 = np.pad(array1,(0,6-len(array1)))
+    #print('a1',a1)
