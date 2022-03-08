@@ -26,19 +26,18 @@ def triangle(N,fs,f0,T):
     n1 = np.floor(fl / df)  # 向下取整
     n2 = np.floor(fh / df)
     n0 = np.floor(f0 / df)
-    for i in range(len(fh)):  # 当i在信号的范围内时
+    for i in range(fh):  # 当i在信号的范围内时
         if i >= n1 and i <= n0:  # 当i在三角形左侧范围的时候，滤波器的函数为TFbank=
             TFbank[i] =  (i - n1) / (n0 - n1)
         if i >= n0 and i <= n2:  # 当i在三角形右侧范围的时候，滤波器的函数为TFbank=
             TFbank[i] =  (n2 - i) / (n2 - n0)
-    plt.plot(freq, TFbank[:])
-    plt.show()
-    return TFbank,w2
+    
+    return TFbank,w2 #返回滤波器和滤波器的窗长
 
 
-if __name__ == '__main__':
-    fs=6000
-    f0=2000
-    a=2
-    T=500
-    triangle(512,fs,a,f0,T)
+#if __name__ == '__main__': #测试三角滤波器
+    #fs=6000
+    #f0=2000
+    #a=2
+    #T=500
+    #triangle(512,fs,a,f0,T)
