@@ -70,6 +70,18 @@ from scipy.signal import lfilter
 <img src=https://github.com/lxp999/Soundchange-relevant-feature-extraction/blob/main/function/img/TriangleFilter.png width="500" height="300">    
 </div>  
 
+> 选择Bw = T/2保证不会overlap
+  
+通过上面3个相关的算法处理，现在可以对每个音的共振峰进行偏移调整进行音色改变：  
+> 将插值法得到的共振峰序列与三角增益滤波器进行乘积（同为频域），从而实现对共振峰的调整（改变极大值点）  
+
+
+## 总结一下
+对于变声处理，传统的dsp方法需要较复杂的处理方式来对音频的频率，共振峰进行调整，并且还需要进行适当的均衡器调整来提升听感。在实际应用情况中，人和人的相同音的共振峰区别较大，不同的音的区别更大，因此要想实现好的变声效果的时候，需要对不同的说话人做个性化的调整，因此需要耗费一定的成本去进行个性化的定制，没有一套泛用性较强的参数。  
+     
+目前的变声方案里面，利用深度学习进行voice conversion是一个比较热门的方案，比较类似于TTS（Text To Speech），用声音合成的手段去实现听感极佳的变声效果
+
+
 
 
 
