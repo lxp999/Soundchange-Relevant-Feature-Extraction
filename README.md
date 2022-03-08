@@ -47,7 +47,10 @@ import pyaudio
 >目前function算法里面实现的内容有：  
 >* 共振峰检测
 >* 基频周期检测
->* 三角滤波器
+>* 三角增益滤波器
+>在function里选择采用类似 `soundlab` 的调整策略，对提取出的共振峰频率与三角增益滤波器进行卷积，保证三角增益滤波器的窗长不超过基音周期，使得不会重叠，验证该方法对音频共振峰的调整效果，以及其是否能实现对音色的改变  
+>三角增益滤波器：   
+>![](https://github.com/lxp999/Soundchange-relevant-feature-extraction/raw/function/TriangleFilter.png)
 
 
 
@@ -55,3 +58,4 @@ import pyaudio
 # Ref
 1. [语音信号处理实验教程（MATLAB源代码）](https://github.com/bastamon/sound_signal_process-matlab- "语音信号处理实验教程")  
 2. [Python实现语音信号处理实验教程](https://github.com/taw19960426/-Speech-signal-processing-experiment-tutorial-_python "Python实现")
+3. [SoundLab](https://github.com/matrixcascade/SoundLab "Soundlab")
