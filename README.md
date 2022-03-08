@@ -55,7 +55,7 @@ from scipy.signal import lfilter
 <div align="center">
 <img src=https://github.com/lxp999/Soundchange-relevant-feature-extraction/blob/main/function/formant_frequency.png width="500" height = "300">
 </div>
-<目前只能检测音素的共振峰，貌似没有什么检测一整句话的共振峰方法
+>目前只能检测音素的共振峰，貌似没有什么检测一整句话的共振峰方法
 
 基音周期检测（LPC法，未经过平滑处理）:  
 <div align = "center">
