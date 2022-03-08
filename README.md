@@ -1,5 +1,5 @@
 # Soundchange-relevant-feature-extraction
-## Python处理声音特征相关代码
+## Python处理声音特征相关代码(仅为本人学习目的)
 
 >记录本人在学习变声(voice change; sound change; male to female)处理相关知识中的相关代码训练，包括改写，debug等  
 >基本内容与matlab语音信号处理中的差不多，主要用的不是matlab而是python  
@@ -28,11 +28,13 @@ from scipy.signal import lfilter
 ## DSP方法实现变声
 男声变换女声的传统dsp方法如下：  
   
-  ` pitch shift (sharpen the sound) --> formant shift (change the timbre) --> EQ + Reverberation`
+  ```
+  pitch shift (sharpen the sound) --> formant shift (change the timbre) --> EQ + Reverberation 
+  ```
   
 >要想实现男声变换成女声，需要着重关注声音特征中的频率 `pitch` 以及共振峰 `formant` ，频率决定着声音的高低，而共振峰决定了声音的音色。  
-本人在此之前测试过多款变声调音插件vst`littlealterboy、Mautopitch、clownfish、Rovee` ，这些插件都需要配合声卡使用从而实现实时的变声处理，这其中`littlealterboy`的变声效果较好，其次是`Rovee`。  
-这两个插件都是基于传统的dsp处理方法实现的变声，并且提供的是简单的`formant shift`，`pitch shift` 数值调整功能，说明仅依靠dsp方法是能实现比较好的变声效果的。  
+本人在此之前测试过多款变声调音插件vst `littlealterboy` 、`Mautopitch` 、`clownfish` 、`Rovee` ，这些插件都需要配合声卡使用从而实现实时的变声处理，这其中 `littlealterboy` 的变声效果较好，其次是`Rovee`。  
+这两个插件都是基于传统的dsp处理方法实现的变声，并且提供的是简单的 `formant shift`，`pitch shift` 数值调整功能，说明仅依靠dsp方法是能实现比较好的变声效果的。  
   
 >目前网上提供的开源变声算法主要集中于简单的变调不变速算法，即通过重采样提升音频的频率 `pitch shift` 从而实现声音变尖锐达到女性声音效果，但往往实际的效果不尽如人意，比较容易呈现出机械声以及小黄人声音类型尖锐的声音。这是因为只改变了频率而没有调整共振峰，音色没有调整所以在听感上效果很差。  
 网络上开源的 `formant shift` 算法不能说是一点没有，而是根本查不到，但是有很多共振峰的检测方法，即可以检测出共振峰所处的频率值（包括第1，2，3共振峰）。  
@@ -60,7 +62,7 @@ from scipy.signal import lfilter
 <img src=https://github.com/lxp999/Soundchange-relevant-feature-extraction/blob/main/function/img/formant_with_marks.png width="500" height = "300">
 </div>  
 
-> 目前只能检测音素的共振峰，貌似没有什么检测一整句话的共振峰方法
+> 目前只能检测音素的共振峰，貌似没有什么检测一整句话的共振峰方法，如果对长话段音频进行共振峰检测，会产生共振峰叠加，使得呈现出的数据异常
 
 基音周期检测（LPC法）:  
 <div align = "center">
