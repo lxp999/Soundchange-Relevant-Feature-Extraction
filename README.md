@@ -50,11 +50,17 @@ import pyaudio
 >* 三角增益滤波器
 >在function里选择采用类似 `soundlab` 的调整策略，对提取出的共振峰频率与三角增益滤波器进行卷积，保证三角增益滤波器的窗长不超过基音周期，使得不会重叠，验证该方法对音频共振峰的调整效果，以及其是否能实现对音色的改变。  
   
->基音周期检测（LPC法）:  
->![](https://github.com/lxp999/Soundchange-relevant-feature-extraction/blob/main/function/pitch_period.png)  
->三角增益滤波器：   
->![](https://github.com/lxp999/Soundchange-relevant-feature-extraction/blob/main/function/TriangleFilter.png)  
->
+基音周期检测（LPC法）:  
+<div align = "center">
+<img src=https://github.com/lxp999/Soundchange-relevant-feature-extraction/blob/main/function/pitch_period.png width="500" height="300">  
+</div>  
+
+三角增益滤波器:
+<div align = "center">
+<img src=https://github.com/lxp999/Soundchange-relevant-feature-extraction/blob/main/function/TriangleFilter.png width="500" height="300">    
+</div>
+
+
 
 
 
