@@ -1,17 +1,16 @@
 import numpy as np
-from TriangleFilter import triangle
 from enframe import enframe
 from Segment import GetSegment
-from scipy.io import wavfile
+from scipy.signal import lfilter
 import matplotlib.pyplot as plt
-from scipy.signal import savgol_filter
+from lpc import lpc_coeff
 
-def pitch_vad(x, wnd, inc, T1, miniL=10):
+def pitch_vad(x, wnd, inc, T1, miniL=10): #话段检测和提取
     """
-    基因检测预处理，能熵比端点检测
+    基音检测预处理，能熵比端点检测
     :param x: 语音信号
     :param wnd:窗长
-    :param inc:
+    :param inc:步长
     :param T1: 门限，做判断，大于T1的部分是有效段候选值
     :param miniL:有话段最小长度，默认为10
     :return:
@@ -73,7 +72,7 @@ def pitch_Ceps(x, wnd, inc, T1, fs, miniL=10):
     b = np.fft.ifft(2 * np.log(np.abs(xx) + 1e-10))
     Lc = np.argmax(b[:, lmin:lmax], axis=1) + lmin - 1 #返回索引值加上基音周期最小值
     period[np.where(SF == 1)[0]] = Lc  #输入有话帧的基音周期
-    return voiceseg, vsl, SF, Ef, period
+    return voiceseg, vsl, SF, Ef, period #返回voiceseg分割好的语音片段列表，vsl语音片段，SF有话段，Ef能量，period周期
 
 
 def pitch_Corr(x, wnd, inc, T1, fs, miniL=10):
@@ -110,15 +109,16 @@ def pitch_Corr(x, wnd, inc, T1, fs, miniL=10):
 
     return voiceseg, vsl, SF, Ef, period
 
-def FrameTimeC(framenumber,framelenth,inc,fs): #计算
+def FrameTimeC(framenumber,framelenth,inc,fs): #频域时域转换，帧换成时间
     x = np.array([i for i in range (framenumber)])
     y = ((x - 1) * inc + framelenth / 2) / fs
     print('y',y)
     print('fn',framenumber)
     return y
-def pitch_Lpc(x,wnd,inc,T1,fs,p,miniL=10):
-    from scipy.signal import lfilter
-    from lpc import lpc_coeff
+
+
+def pitch_Lpc(x,wnd,inc,T1,fs,p,miniL=10): #lpc法求基频周期
+    
     y = enframe(x,wnd,inc)
     fn = y.shape[0]
     if isinstance(wnd,int):
@@ -142,48 +142,4 @@ def pitch_Lpc(x,wnd,inc,T1,fs,p,miniL=10):
             lc = np.argmax(b[lmin:lmax])
             period[k]= lc +lmin
     return voiceseg,vsl,SF, Ef, period
-
-
-
-if __name__ == '__main__':
-    fs, data = wavfile.read('test.wav')
-    data = data - np.mean(data) #预处理
-    data /= np.max(np.abs(data))
-    wlen = 320
-    inc = 80
-    N= len(data)
-    time = [i for i in range(N)]
-    T1 = 0.05
-    plt.figure(figsize=(14, 8))
-    plt.subplot(3, 1, 1)
-    plt.plot(time, data)
-    p=12
-    voiceseg, vsl, SF, Ef, period= pitch_Lpc(data,wlen,inc,T1,fs,p)
-    #f0 = fs//period
-    #adj = data*triangle(N,fs,f0,period)#三角滤波器乘上原音频进行处理
-    #plt.subplot(3,1,2)
-    #plt.plot(time,adj)
-    #for i in range(vsl):
-        #st = voiceseg[i]['start']
-        #en = voiceseg[i]['end'] #读取开始和结束的位置，相当于提取片段
-        #divide = en-st
-        #k = np.zeros(divide)
-        #k = period[st:en]
-        #print('k',k)
-        #均衡滤波器,调用linearfilter实现，其中包含了一个线性滤波器和一个中值滤波器
-        #print('P',Period)
-
-    #print(voiceseg[1]['start'])
-
-    fn = len(SF)
-
-    frametime = FrameTimeC(fn,wlen,inc,fs)
-
-    plt.subplot(3, 1, 3)
-    plt.plot(frametime,period)
-    plt.show()
-    print('周期',period)
-
-
-    #print('频率',fs//period)
 
