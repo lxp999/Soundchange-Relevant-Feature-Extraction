@@ -17,18 +17,18 @@ def LFilter(x,n):  #线性平滑滤波器，暂时有问题，存在数据类型
     if np.mod(n,2) ==0:#偶数情况
         l = (n//2) #偶数
 
-        #x1 = np.ones(1)*x[0]#创建前向矩阵，用的x[1]的值
-        #x2 = np.ones(1) * x[lenth-1]#创建后向序列，用的x[lenth]
-        #xm = np.hstack(x1,x) #拼接矩阵补齐长度
+        #x1 = np.ones(1)*x[0]#创建前向矩阵，用的x[0]的值
+        #x2 = np.ones(1) * x[lenth-1]#创建后向序列，用的x[lenth-1]的值防止溢出
+        #xm = np.hstack(x1,x) #拼接矩阵补齐长度,hstack(a,b)水平方向拼接a,b
         #x = np.hstack(xm,x2) #同上
         x0 = x[0]
-        print('xlenth',x[lenth-1])
+        #print('xlenth',x[lenth-1])
         xl = x[lenth-1]
-        print('x0',x0,'xl',xl)
+        #print('x0',x0,'xl',xl)
         x1 = np.hstack(x0,x)
-        print(x1)
+        #print(x1)
         x2 = np.hstack(x1,xl)
-        print(x2)
+        #print(x2)
         x2 = np.array(x2)
 
     else:
@@ -41,22 +41,19 @@ def LFilter(x,n):  #线性平滑滤波器，暂时有问题，存在数据类型
         x0 = x[0]
 
         xl = x[lenth-1]
-        print('xlenth',x[lenth-1])
-        print('x0', x0, 'xl', xl)
+        #print('xlenth',x[lenth-1])
+        #print('x0', x0, 'xl', xl)
         x1 = np.hstack((x0, x))
-        print(x1)
+        #print(x1)
         x2 = np.hstack((x1, xl))
-        print(x2)
+        #print(x2)
         #x1 = np.pad(x,((0,0),(1, l)),'constant', constant_value=(x0, xl))
         x3 = []
     for k in range(lenth):
-        x3.append(x[k])
+        x3.append(x2[k])#将矩阵转换为数组方便后续计算处理
         #窗口移动
-        y[k]=np.convolve(x2,window)#和窗口乘积计算得到平滑处理后的效果,目前的问题在于，无法用索引索引列表
-
-
-    #print(x)
-    #print(y)
+        y[k]=np.convolve(x2,window)#和窗口乘积计算得到平滑处理后的效果,目前的问题在于，无法用索引到需要的元素
+        
     return x1,y
 
 def medfilter(x):#计算的时候都是以数组进行计算的，需要对列表等参数进行处理成数组运算
@@ -66,15 +63,15 @@ def medfilter(x):#计算的时候都是以数组进行计算的，需要对列�
     return y
 
 def combinedfilter(x,vseg,vsl):#将两个函数合并处理
-    y = np.zeros_like(x)
+    y = np.zeros_like(x)#创建存储矩阵
     for i in range(vsl):#提取有话段
-        ixs = vseg[i]['start'] #提取开始帧
+        ixs = vseg[i]['start'] #提取开始帧，这里的ixs得到的应该是开始start的值，即为开始的序号
         ixe = vseg[i]['end']  #提取结束帧
         #提取有话段
-        u0 = x[ixs:ixe]
-        y0 = medfilter(u0)
-        y1 = LFilter(y0,5)
-        y[ixs:ixe]=y1
+        u0 = x[ixs:ixe] #选取第一个有话范围
+        y0 = medfilter(u0) #先中值滤波器处理
+        y1 = LFilter(y0,5) #再进行线性滤波
+        y[ixs:ixe]=y1 #存储处理后的数据
 
     return y
 
